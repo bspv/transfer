@@ -19,4 +19,9 @@ public class DefinitionProperties {
     @Value("${spring.application.name}")
     private String applicationName;
 
+    @Value("${webclient.baseUrl}")
+    private String baseUrl;
+    @Value("${webclient.timeoutSeconds}")
+    private Integer timeoutSeconds;
+
 }

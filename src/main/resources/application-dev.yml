@@ -38,6 +38,10 @@ spring:
 #    await-termination-seconds: 60
 #    waitForTasksToComplete: true
 
+webclient:
+  baseUrl: http://api.bazzi.com/
+  timeoutSeconds: 60
+
 logging:
   level:
     root: debug
