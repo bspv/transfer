@@ -29,6 +29,7 @@ public class Knife4jConfig {
 
     @Bean
     public Docket createRestApi() {
+        //http://localhost:9001/doc.html
         return new Docket(DocumentationType.OAS_30) // 使用 OAS_30 文档类型
                 .enable(!StringUtils.equals("prod", definitionProperties.getActiveProfile())) // 生产环境禁用
                 .apiInfo(apiInfo())
