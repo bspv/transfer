@@ -425,7 +425,7 @@ public final class CsvUtil {
 
             int pageIdx = 1;
             List<String[]> batch;
-            while (!(batch = dataSupplier.getBatch(pageIdx, conf.getPageSize())).isEmpty()) {
+            while (!(batch = dataSupplier.getPage(pageIdx, conf.getPageSize())).isEmpty()) {
                 csvWriter.writeAll(batch);
                 csvWriter.flush();
                 pageIdx++;
@@ -564,7 +564,7 @@ public final class CsvUtil {
                     .build();
             int pageIdx = 1;
             List<T> batch;
-            while (!(batch = dataSupplier.getBatch(pageIdx, conf.getPageSize())).isEmpty()) {
+            while (!(batch = dataSupplier.getPage(pageIdx, conf.getPageSize())).isEmpty()) {
                 beanToCsv.write(batch);
                 csvWriter.flush();
                 pageIdx++;
@@ -751,7 +751,7 @@ public final class CsvUtil {
      */
     @FunctionalInterface
     public interface DataSupplier<T> {
-        List<T> getBatch(int pageIdx, int pageSize);
+        List<T> getPage(int pageIdx, int pageSize);
     }
 
     /**
