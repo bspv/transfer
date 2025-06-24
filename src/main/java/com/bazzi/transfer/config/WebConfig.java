@@ -27,18 +27,20 @@ public class WebConfig implements WebMvcConfigurer {
     private final CustomInterceptor commonInterceptor;
     private final DefinitionProperties definitionProperties;
 
+    public ExchangeFilterFunction printExchangeInfo() {
+        if (definitionProperties.isProduction())
+            return ExchangeFilterFunction.ofRequestProcessor(Mono::just);
 
-    public static ExchangeFilterFunction logRequestResponse() {
         return ExchangeFilterFunction.ofRequestProcessor(request -> {
-            log.info("Request: {} {}", request.method(), request.url());
-            log.info("Headers: {}", request.headers());
-            log.info("Body: {}", request.body());
+            log.info("WebClient---Request Url:{},Method:{},Headers:{}",
+                    request.url(), request.method(), request.headers());
+
             return Mono.just(request);
         }).andThen(ExchangeFilterFunction.ofResponseProcessor(response -> {
-            log.info("Response Status: {}", response.statusCode());
-            return response.bodyToMono(String.class)
-                    .doOnNext(body -> log.info("Response Body: {}", body))
-                    .thenReturn(response);
+            log.info("WebClient---Response Status: {},Headers: {}",
+                    response.statusCode(), response.headers().asHttpHeaders());
+
+            return Mono.just(response);
         }));
     }
 
@@ -47,11 +49,12 @@ public class WebConfig implements WebMvcConfigurer {
         return WebClient.builder()
                 .baseUrl(definitionProperties.getBaseUrl())
                 .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                .defaultHeader(HttpHeaders.AUTHORIZATION, "Bearer " + definitionProperties.getApiKey())
                 .clientConnector(new ReactorClientHttpConnector(
                         HttpClient.create().responseTimeout(
                                 Duration.ofSeconds(definitionProperties.getTimeoutSeconds())) // 响应超时
                 ))
-                .filter(logRequestResponse()) // 添加日志过滤器
+                .filter(printExchangeInfo()) // 添加日志过滤器
                 .build();
     }
 

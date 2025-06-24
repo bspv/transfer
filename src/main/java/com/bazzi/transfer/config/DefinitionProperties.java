@@ -19,9 +19,15 @@ public class DefinitionProperties {
     @Value("${spring.application.name}")
     private String applicationName;
 
-    @Value("${webclient.baseUrl}")
+//    @Value("${webclient.baseUrl}")
+    @Value("${spring.ai.deepseek.base-url}")
     private String baseUrl;
-    @Value("${webclient.timeoutSeconds}")
+    @Value("${spring.ai.deepseek.api-key}")
+    private String apiKey;
+    @Value("${spring.ai.deepseek.timeout-seconds}")
     private Integer timeoutSeconds;
 
+    public boolean isProduction() {
+        return "prod".equals(activeProfile);
+    }
 }

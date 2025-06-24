@@ -22,6 +22,11 @@ spring:
       ## 数据库连接超时时间,默认30秒，即30000
       connection-timeout: 30000
       connection-test-query: SELECT 1
+  ai:
+    deepseek:
+      base-url: https://api.deepseek.com
+      api-key: sk-d308d5503af54212bfc80d0168ae151b
+      timeout-seconds: 60
 #  redis:
 #    cluster:
 #      nodes:
@@ -37,10 +42,6 @@ spring:
 #    thread-name-prefix: task-scheduler-pool-
 #    await-termination-seconds: 60
 #    waitForTasksToComplete: true
-
-webclient:
-  baseUrl: http://api.bazzi.com/
-  timeoutSeconds: 60
 
 logging:
   level:
